@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tv_left, tv_score;
     Button start_btn;
     Random rand;
+    int currMonsterRid;
+    Monster monster=new Monster(1,1);
 
     int score = 0, fps = 1000, left = 5;
     boolean isHit = false;
@@ -25,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     int whichMonsterToShow = 0;
     int whichSave = 0;
 
-
+    ArrayList<ImageView> monstersImV = new ArrayList<>();//test
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
         monster1.setVisibility(View.INVISIBLE);
         monster2.setVisibility(View.INVISIBLE);
         monster3.setVisibility(View.INVISIBLE);
+
+
+        monstersImV.add(monster1);//test
+        monstersImV.add(monster2);//test
+        monstersImV.add(monster3);//test
 
         final Animation hideAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.hide_monster);
 
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isHit = true;//flag
-                monster1.setImageResource(R.drawable.m1);
+                monster1.setImageResource(R.drawable.bam);
                 monster1.setAnimation(hideAnim);
                 score += 1;
                 tv_score.setText("SCORE: " + score);
@@ -79,8 +88,12 @@ public class MainActivity extends AppCompatActivity {
         monster2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView hummer = new ImageView(MainActivity.this);
+                hummer.setLayoutParams(v.getLayoutParams());
+//                Animation hummerHitAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.hummer_hit);
+//                hummer.setAnimation(hummerHitAnim);
                 isHit = true;
-                monster2.setImageResource(R.drawable.m2);
+                monster2.setImageResource(R.drawable.bam);
                 monster2.setAnimation(hideAnim);
                 score += 1;
                 tv_score.setText("SCORE: " + score);
@@ -91,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isHit = true;
-                monster3.setImageResource(R.drawable.m3);
+                monster3.setImageResource(R.drawable.bam);
                 monster3.setAnimation(hideAnim);
                 score += 1;
                 tv_score.setText("SCORE: " + score);
@@ -133,41 +146,68 @@ public class MainActivity extends AppCompatActivity {
             fps = 350;
         }
 
-        // set the animation for the monsters show up
+        // set the animation for the monstersImV show up
         Animation showAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.show_monster);
 
-        do {
-            whichMonsterToShow = rand.nextInt(3) + 1;
+        Collections.shuffle(monstersImV);
+        ArrayList<Integer> monsterPicIds = new ArrayList<>();
+        monsterPicIds.add(R.drawable.m1);
+        monsterPicIds.add(R.drawable.m2);
+        monsterPicIds.add(R.drawable.m3);
+        monsterPicIds.add(R.drawable.m4);
+        monsterPicIds.add(R.drawable.m5);
+        monsterPicIds.add(R.drawable.m6);
 
-        } while (whichSave == whichMonsterToShow);
-        whichSave = whichMonsterToShow;
+        Collections.shuffle(monsterPicIds);
 
-        if (whichMonsterToShow == 1) {
-            monster1.setImageResource(R.drawable.m1);
-            monster1.setVisibility(View.VISIBLE);
-            monster1.setAnimation(showAnim);
-            monster1.setEnabled(true);
-        } else if (whichMonsterToShow == 2) {
-            monster2.setImageResource(R.drawable.m2);
-            monster2.setVisibility(View.VISIBLE);
-            monster2.setAnimation(showAnim);
-            monster2.setEnabled(true);
-        } else if (whichMonsterToShow == 3) {
-            monster3.setImageResource(R.drawable.m3);
-            monster3.setVisibility(View.VISIBLE);
-            monster3.setAnimation(showAnim);
-            monster3.setEnabled(true);
-        }
+
+        monstersImV.get(0).setImageResource(monsterPicIds.get(0));
+        monstersImV.get(0).setVisibility(View.VISIBLE);
+        monstersImV.get(0).setAnimation(showAnim);
+        monstersImV.get(0).setEnabled(true);
+
+
+//        do {
+//            whichMonsterToShow = rand.nextInt(3) + 1;
+//
+//        } while (whichSave == whichMonsterToShow);
+//        whichSave = whichMonsterToShow;
+//
+//        if (whichMonsterToShow == 1) {
+//            monster1.setImageResource(R.drawable.m1);
+//            monster1.setVisibility(View.VISIBLE);
+//            monster1.setAnimation(showAnim);
+//            monster1.setEnabled(true);
+//        } else if (whichMonsterToShow == 2) {
+//            monster2.setImageResource(R.drawable.m2);
+//            monster2.setVisibility(View.VISIBLE);
+//            monster2.setAnimation(showAnim);
+//            monster2.setEnabled(true);
+//        } else if (whichMonsterToShow == 3) {
+//            monster3.setImageResource(R.drawable.m3);
+//            monster3.setVisibility(View.VISIBLE);
+//            monster3.setAnimation(showAnim);
+//            monster3.setEnabled(true);
+//        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                monster1.setVisibility(View.INVISIBLE);
-                monster2.setVisibility(View.INVISIBLE);
-                monster3.setVisibility(View.INVISIBLE);
+//                monster1.setVisibility(View.INVISIBLE);
+//                monster2.setVisibility(View.INVISIBLE);
+//                monster3.setVisibility(View.INVISIBLE);
+//
+//                monster1.setEnabled(false);
+//                monster2.setEnabled(false);
+//                monster3.setEnabled(false);
 
-                monster1.setEnabled(false);
-                monster2.setEnabled(false);
-                monster3.setEnabled(false);
+
+                monstersImV.get(0).setVisibility(View.INVISIBLE);
+                monstersImV.get(0).setVisibility(View.INVISIBLE);
+                monstersImV.get(0).setVisibility(View.INVISIBLE);
+
+                monstersImV.get(0).setEnabled(false);
+                monstersImV.get(0).setEnabled(false);
+                monstersImV.get(0).setEnabled(false);
 
                 if (!isHit) {
                     left--;
