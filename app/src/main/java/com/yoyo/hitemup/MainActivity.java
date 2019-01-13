@@ -15,17 +15,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
-    ImageView creatureHole1, creatureHole2, creatureHole3;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    ImageView
+            creatureHole1_Iv,
+            creatureHole2_Iv,
+            creatureHole3_Iv,
+            creatureHole4_Iv,
+            creatureHole5_Iv,
+            creatureHole6_Iv,
+            creatureHole7_Iv,
+            creatureHole8_Iv,
+            creatureHole9_Iv;
+
     TextView tv_left, tv_score;
+
     Button start_btn;
-    Random rand;
 
-    int score = 0, fps = 1000, left = 5;
-    boolean isHit = false;
+    int
+            score = 0,
+            fps = 1000,
+            left = 5;
 
-    ArrayList<ImageView> holes = new ArrayList<>();//test
-    ArrayList<Creature> creatures = new ArrayList<>();
+    boolean
+            isHit = false;
+
+    ArrayList<ImageView>
+            holes = new ArrayList<>();
+
+    ArrayList<Creature>
+            creatures = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,68 +69,52 @@ public class MainActivity extends AppCompatActivity {
                 start_btn.setEnabled(false);
             }
         });
-        creatureHole1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isHit = true;//flag
-                creatures.get(0).deadCreature(creatureHole1,MainActivity.this);
+    }
+    
+    @Override
+    public void onClick(View v) {
 
-                score += creatures.get(0).getValueOfCreature();
-                left += creatures.get(0).getLife();
+        if (v.getId() != R.id.start_btn) {
 
-                tv_left.setText("LEFT: " + left);
-                tv_score.setText("SCORE: " + score);
-            }
-        });
-        creatureHole2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isHit = true;//flag
-                creatures.get(0).deadCreature(creatureHole2,MainActivity.this);
+            isHit = true;//flag
+            creatures.get(0).deadCreature(((ImageView)v), MainActivity.this);
 
-                score += creatures.get(0).getValueOfCreature();
-                left += creatures.get(0).getLife();
-
-                tv_left.setText("LEFT: " + left);
-                tv_score.setText("SCORE: " + score);
-            }
-        });
-        creatureHole3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isHit = true;//flag
-                creatures.get(0).deadCreature(creatureHole3,MainActivity.this);
-
-                score += creatures.get(0).getValueOfCreature();
-                left += creatures.get(0).getLife();
-
-                tv_left.setText("LEFT: " + left);
-                tv_score.setText("SCORE: " + score);
-            }
-        });
-
+            score += creatures.get(0).getValueOfCreature();
+            left += creatures.get(0).getLife();
+        }
     }
 
     private void initViews() {
 
-        rand = new Random();
-
-        creatureHole1 = findViewById(R.id.m1_IV);
-        creatureHole2 = findViewById(R.id.m2_IV);
-        creatureHole3 = findViewById(R.id.m3_IV);
+        creatureHole1_Iv = findViewById(R.id.m1_IV);
+        creatureHole2_Iv = findViewById(R.id.m2_IV);
+        creatureHole3_Iv = findViewById(R.id.m3_IV);
+        creatureHole4_Iv = findViewById(R.id.m4_IV);
+        creatureHole5_Iv = findViewById(R.id.m5_IV);
+        creatureHole6_Iv = findViewById(R.id.m6_IV);
+        creatureHole7_Iv = findViewById(R.id.m7_IV);
+        creatureHole8_Iv = findViewById(R.id.m8_IV);
+        creatureHole9_Iv = findViewById(R.id.m9_IV);
 
         tv_left = findViewById(R.id.textViewL);
         tv_score = findViewById(R.id.textView2R);
 
         start_btn = findViewById(R.id.start_btn);
 
-        holes.add(creatureHole1);//test
-        holes.add(creatureHole2);//test
-        holes.add(creatureHole3);//test
+        holes.add(creatureHole1_Iv);
+        holes.add(creatureHole2_Iv);
+        holes.add(creatureHole3_Iv);
+        holes.add(creatureHole4_Iv);
+        holes.add(creatureHole5_Iv);
+        holes.add(creatureHole6_Iv);
+        holes.add(creatureHole7_Iv);
+        holes.add(creatureHole8_Iv);
+        holes.add(creatureHole9_Iv);
 
         for (ImageView im : holes) {
             im.setVisibility(View.INVISIBLE);
             im.setEnabled(false);
+            im.setOnClickListener(this);
         }
 
         creaturesCreate();
@@ -165,14 +167,17 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle(holes);
         Collections.shuffle(creatures);
 
-        creatures.get(0).showCreacure(holes.get(0),MainActivity.this);
+        creatures.get(0).showCreacure(holes.get(0), MainActivity.this);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
+                tv_left.setText("LEFT: " + left);
+                tv_score.setText("SCORE: " + score);
+
                 if (!isHit) {
-                    creatures.get(0).hideCreature(holes.get(0),MainActivity.this);
+                    creatures.get(0).hideCreature(holes.get(0), MainActivity.this);
                     left--;
                     tv_left.setText("LEFT: " + left);
                 } else {
@@ -189,4 +194,5 @@ public class MainActivity extends AppCompatActivity {
         }, fps);
 
     }
+
 }
