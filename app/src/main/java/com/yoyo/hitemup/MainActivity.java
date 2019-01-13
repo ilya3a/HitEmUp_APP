@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView monster1, monster2, monster3;
+    ImageView creatureHole1, creatureHole2, creatureHole3;
     TextView tv_left, tv_score;
     Button start_btn;
     Random rand;
@@ -22,31 +24,15 @@ public class MainActivity extends AppCompatActivity {
     int score = 0, fps = 1000, left = 5;
     boolean isHit = false;
 
-    int whichMonsterToShow = 0;
-    int whichSave = 0;
-
+    ArrayList<ImageView> holes = new ArrayList<>();//test
+    ArrayList<Creature> creatures = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rand = new Random();
-
-        monster1 = findViewById(R.id.m1_IV);
-        monster2 = findViewById(R.id.m2_IV);
-        monster3 = findViewById(R.id.m3_IV);
-
-        tv_left = findViewById(R.id.textViewL);
-        tv_score = findViewById(R.id.textView2R);
-
-        start_btn = findViewById(R.id.start_btn);
-
-        monster1.setVisibility(View.INVISIBLE);
-        monster2.setVisibility(View.INVISIBLE);
-        monster3.setVisibility(View.INVISIBLE);
-
-        final Animation hideAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.hide_monster);
+        initViews();
 
 
         start_btn.setOnClickListener(new View.OnClickListener() {
@@ -65,39 +51,81 @@ public class MainActivity extends AppCompatActivity {
                 start_btn.setEnabled(false);
             }
         });
-        monster1.setOnClickListener(new View.OnClickListener() {
+        creatureHole1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isHit = true;//flag
-                monster1.setImageResource(R.drawable.m1);
-                monster1.setAnimation(hideAnim);
-                score += 1;
+                creatures.get(0).deadCreature(creatureHole1,MainActivity.this);
+
+                score += creatures.get(0).getValueOfCreature();
+                left += creatures.get(0).getLife();
+
+                tv_left.setText("LEFT: " + left);
                 tv_score.setText("SCORE: " + score);
-                monster1.setEnabled(false);
             }
         });
-        monster2.setOnClickListener(new View.OnClickListener() {
+        creatureHole2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isHit = true;
-                monster2.setImageResource(R.drawable.m2);
-                monster2.setAnimation(hideAnim);
-                score += 1;
+                isHit = true;//flag
+                creatures.get(0).deadCreature(creatureHole2,MainActivity.this);
+
+                score += creatures.get(0).getValueOfCreature();
+                left += creatures.get(0).getLife();
+
+                tv_left.setText("LEFT: " + left);
                 tv_score.setText("SCORE: " + score);
-                monster2.setEnabled(false);
             }
         });
-        monster3.setOnClickListener(new View.OnClickListener() {
+        creatureHole3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isHit = true;
-                monster3.setImageResource(R.drawable.m3);
-                monster3.setAnimation(hideAnim);
-                score += 1;
+                isHit = true;//flag
+                creatures.get(0).deadCreature(creatureHole3,MainActivity.this);
+
+                score += creatures.get(0).getValueOfCreature();
+                left += creatures.get(0).getLife();
+
+                tv_left.setText("LEFT: " + left);
                 tv_score.setText("SCORE: " + score);
-                monster3.setEnabled(false);
             }
         });
+
+    }
+
+    private void initViews() {
+
+        rand = new Random();
+
+        creatureHole1 = findViewById(R.id.m1_IV);
+        creatureHole2 = findViewById(R.id.m2_IV);
+        creatureHole3 = findViewById(R.id.m3_IV);
+
+        tv_left = findViewById(R.id.textViewL);
+        tv_score = findViewById(R.id.textView2R);
+
+        start_btn = findViewById(R.id.start_btn);
+
+        holes.add(creatureHole1);//test
+        holes.add(creatureHole2);//test
+        holes.add(creatureHole3);//test
+
+        for (ImageView im : holes) {
+            im.setVisibility(View.INVISIBLE);
+            im.setEnabled(false);
+        }
+
+        creaturesCreate();
+
+    }
+
+    private void creaturesCreate() {
+        creatures.add(new Monster(1, R.drawable.m1));
+        creatures.add(new Monster(1, R.drawable.m2));
+        creatures.add(new Monster(1, R.drawable.m3));
+        creatures.add(new Monster(1, R.drawable.m4));
+        creatures.add(new Monster(1, R.drawable.m5));
+        creatures.add(new Monster(1, R.drawable.m6));
 
     }
 
@@ -133,43 +161,18 @@ public class MainActivity extends AppCompatActivity {
             fps = 350;
         }
 
-        // set the animation for the monsters show up
-        Animation showAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.show_monster);
 
-        do {
-            whichMonsterToShow = rand.nextInt(3) + 1;
+        Collections.shuffle(holes);
+        Collections.shuffle(creatures);
 
-        } while (whichSave == whichMonsterToShow);
-        whichSave = whichMonsterToShow;
+        creatures.get(0).showCreacure(holes.get(0),MainActivity.this);
 
-        if (whichMonsterToShow == 1) {
-            monster1.setImageResource(R.drawable.m1);
-            monster1.setVisibility(View.VISIBLE);
-            monster1.setAnimation(showAnim);
-            monster1.setEnabled(true);
-        } else if (whichMonsterToShow == 2) {
-            monster2.setImageResource(R.drawable.m2);
-            monster2.setVisibility(View.VISIBLE);
-            monster2.setAnimation(showAnim);
-            monster2.setEnabled(true);
-        } else if (whichMonsterToShow == 3) {
-            monster3.setImageResource(R.drawable.m3);
-            monster3.setVisibility(View.VISIBLE);
-            monster3.setAnimation(showAnim);
-            monster3.setEnabled(true);
-        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                monster1.setVisibility(View.INVISIBLE);
-                monster2.setVisibility(View.INVISIBLE);
-                monster3.setVisibility(View.INVISIBLE);
-
-                monster1.setEnabled(false);
-                monster2.setEnabled(false);
-                monster3.setEnabled(false);
 
                 if (!isHit) {
+                    creatures.get(0).hideCreature(holes.get(0),MainActivity.this);
                     left--;
                     tv_left.setText("LEFT: " + left);
                 } else {
