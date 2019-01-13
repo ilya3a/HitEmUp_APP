@@ -6,13 +6,24 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-public class Creature implements ICreature{
+public class Creature implements ICreature {
     private int valueOfCreature;
     private int ImgResId;
+    private int life;
 
-    public Creature(int valueOfCreature, int imgResId) {
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public Creature(int valueOfCreature, int imgResId, int life) {
         this.valueOfCreature = valueOfCreature;
         this.ImgResId = imgResId;
+        this.life = life;
+
     }
 
     public int getValueOfCreature() {
@@ -31,7 +42,7 @@ public class Creature implements ICreature{
         ImgResId = imgResId;
     }
 
-    public void showMonster(ImageView view, Context context) {
+    public void showCreacure(ImageView view, Context context) {
         Animation showAnim = AnimationUtils.loadAnimation(context, R.anim.show_monster);
         view.setImageResource(getImgResId());
         view.setVisibility(View.VISIBLE);
@@ -39,23 +50,18 @@ public class Creature implements ICreature{
         view.setEnabled(true);
     }
 
-    public void deadMonster(ImageView view, Context context) {
-        ImageView hummer = new ImageView(context);
-        hummer.setLayoutParams(view.getLayoutParams());
-//                Animation hummerHitAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.hummer_hit);
-//                hummer.setAnimation(hummerHitAnim);
-//        isHit = true;XXXXXXXXX
+    public void deadCreature(ImageView view, Context context) {
         Animation hideAnim = AnimationUtils.loadAnimation(context, R.anim.hide_monster);
         view.setImageResource(R.drawable.bam);
         view.setAnimation(hideAnim);
         view.setEnabled(false);
-//        score += 1;NEED TO UPDATE CONTEXT
-//        tv_score.setText("SCORE: " + score);
-
+        view.setVisibility(View.INVISIBLE);
     }
-    public void hideMonster(ImageView view,Context context){
+
+    public void hideCreature(ImageView view, Context context) {
         Animation hideAnim = AnimationUtils.loadAnimation(context, R.anim.hide_monster);
         view.setAnimation(hideAnim);
         view.setEnabled(false);
+        view.setVisibility(View.INVISIBLE);
     }
 }
