@@ -8,15 +8,20 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class start_screen extends AppCompatActivity {
     ImageButton play_btn;
+    ImageView game_logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
+        game_logo=findViewById(R.id.game_logo);
+        Animation bounce = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bounce);
+        game_logo.startAnimation(bounce);
 
         play_btn = findViewById(R.id.play_btn);
         //set button animation

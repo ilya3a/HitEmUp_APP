@@ -3,6 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/game_logo"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/game_logo"/>
+
     <ImageButton
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -11,4 +19,15 @@
         android:background="@color/transparent"
         android:scaleType="fitCenter"
         android:id="@+id/play_btn"/>
+
+    <ImageButton
+        android:id="@+id/fab"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitCenter"
+        android:background="@color/transparent"
+        android:src="@drawable/setting_btn"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>
