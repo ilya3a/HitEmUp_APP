@@ -4,8 +4,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +11,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView
@@ -34,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int
             score = 0,
             fps = 1000,
-            left = 5;
+            left = 5,
+            difficulty = 3;
 
     boolean
             isHit = false;
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ArrayList<Creature>
             creatures = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +69,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-    
+
     @Override
     public void onClick(View v) {
 
         if (v.getId() != R.id.start_btn) {
 
             isHit = true;//flag
-            creatures.get(0).deadCreature(((ImageView)v), MainActivity.this);
+            creatures.get(0).deadCreature(((ImageView) v), MainActivity.this);// no not using class members
 
             score += creatures.get(0).getValueOfCreature();
             left += creatures.get(0).getLife();
@@ -110,11 +109,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         holes.add(creatureHole7_Iv);
         holes.add(creatureHole8_Iv);
         holes.add(creatureHole9_Iv);
-
+        int i = 0;
         for (ImageView im : holes) {
             im.setVisibility(View.INVISIBLE);
             im.setEnabled(false);
             im.setOnClickListener(this);
+            im.setTag(i++);
         }
 
         creaturesCreate();
@@ -122,12 +122,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void creaturesCreate() {
-        creatures.add(new Monster(1, R.drawable.m1));
-        creatures.add(new Monster(1, R.drawable.m2));
-        creatures.add(new Monster(1, R.drawable.m3));
-        creatures.add(new Monster(1, R.drawable.m4));
-        creatures.add(new Monster(1, R.drawable.m5));
-        creatures.add(new Monster(1, R.drawable.m6));
+        creatures.add(new Monster(1, 1, R.drawable.m1));
+        creatures.add(new Monster(2, 1, R.drawable.m2));
+        creatures.add(new Monster(3, 1, R.drawable.m3));
+        creatures.add(new Monster(4, 1, R.drawable.m4));
+        creatures.add(new Monster(5, 1, R.drawable.m5));
+        creatures.add(new Monster(6, 1, R.drawable.m6));
 
     }
 
@@ -149,25 +149,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fps = 700;
         } else if (score < 45 && score >= 40) {
             fps = 650;
-        } else if (score < 50 && score >= 45) {
-            fps = 600;
-        } else if (score < 55 && score >= 50) {
-            fps = 550;
-        } else if (score < 60 && score >= 55) {
-            fps = 500;
-        } else if (score < 65 && score >= 60) {
-            fps = 450;
-        } else if (score < 70 && score >= 65) {
-            fps = 400;
-        } else if (score >= 70) {
-            fps = 350;
         }
 
 
         Collections.shuffle(holes);
         Collections.shuffle(creatures);
 
-        creatures.get(0).showCreacure(holes.get(0), MainActivity.this);
+        creatures.get(0).showCreature(holes.get(0), MainActivity.this);
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -177,7 +166,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tv_score.setText("SCORE: " + score);
 
                 if (!isHit) {
+
                     creatures.get(0).hideCreature(holes.get(0), MainActivity.this);
+
                     left--;
                     tv_left.setText("LEFT: " + left);
                 } else {

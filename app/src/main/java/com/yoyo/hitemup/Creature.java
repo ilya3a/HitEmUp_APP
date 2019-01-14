@@ -10,19 +10,23 @@ public class Creature implements ICreature {
     private int valueOfCreature;
     private int ImgResId;
     private int life;
+    private int id;
 
     public int getLife() {
         return life;
     }
 
-    public void setLife(int life) {
-        this.life = life;
+
+    public int getId() {
+        return id;
     }
 
-    public Creature(int valueOfCreature, int imgResId, int life) {
+    public Creature(int id, int valueOfCreature, int imgResId, int life) {
         this.valueOfCreature = valueOfCreature;
         this.ImgResId = imgResId;
         this.life = life;
+        this.id=id;
+
 
     }
 
@@ -30,19 +34,13 @@ public class Creature implements ICreature {
         return valueOfCreature;
     }
 
-    public void setValueOfCreature(int valueOfCreature) {
-        this.valueOfCreature = valueOfCreature;
-    }
 
     public int getImgResId() {
         return ImgResId;
     }
 
-    public void setImgResId(int imgResId) {
-        ImgResId = imgResId;
-    }
-
-    public void showCreacure(ImageView view, Context context) {
+    public void showCreature(ImageView view, Context context) {
+//        view.setTag(id);
         Animation showAnim = AnimationUtils.loadAnimation(context, R.anim.show_monster);
         view.setImageResource(getImgResId());
         view.setVisibility(View.VISIBLE);
