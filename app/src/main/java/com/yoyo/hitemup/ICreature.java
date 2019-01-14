@@ -8,6 +8,6 @@ public interface ICreature {
 
     void deadCreature(ImageView view, Context context);
 
-    void showCreacure(ImageView view, Context context);
+    void showCreature(ImageView view, Context context);
 
 }
